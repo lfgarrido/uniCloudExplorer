@@ -2,7 +2,7 @@ object UniServerModule: TUniServerModule
   OldCreateOrder = False
   AutoCoInitialize = True
   TempFolder = 'temp\'
-  Title = 'New Application'
+  Title = 'Cloud Explorer'
   SuppressErrors = []
   Bindings = <>
   MainFormDisplayMode = mfPage

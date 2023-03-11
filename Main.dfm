@@ -24,11 +24,13 @@ object MainForm: TMainForm
     TabOrder = 0
   end
   object ConnectionCombo: TUniComboBox
-    Left = 47
+    Left = 55
     Top = 8
     Width = 316
     Height = 21
+    Cursor = crHandPoint
     Hint = ''
+    Style = csDropDownList
     Text = ''
     Anchors = [akLeft, akTop, akRight]
     TabOrder = 1
@@ -36,7 +38,7 @@ object MainForm: TMainForm
     OnChange = ConnectionComboChange
   end
   object ManageButton: TUniButton
-    Left = 369
+    Left = 377
     Top = 8
     Width = 26
     Height = 25
@@ -72,10 +74,8 @@ object MainForm: TMainForm
         Align = alClient
         TabOrder = 0
         Caption = ''
-        ExplicitWidth = 460
-        ExplicitHeight = 199
         object ColumnSplitter: TUniSplitter
-          Left = 242
+          Left = 401
           Top = 1
           Width = 6
           Height = 546
@@ -83,29 +83,27 @@ object MainForm: TMainForm
           Align = alLeft
           ParentColor = False
           Color = clWhite
-          ExplicitHeight = 197
         end
         object LeftPanel: TUniPanel
           Left = 1
           Top = 1
-          Width = 241
+          Width = 400
           Height = 546
           Hint = ''
           Align = alLeft
           TabOrder = 0
           Caption = ''
-          ExplicitHeight = 197
           object LocalNavPanel: TUniPanel
             Left = 1
             Top = 1
-            Width = 239
+            Width = 398
             Height = 25
             Hint = ''
             Align = alTop
             TabOrder = 0
             Caption = ''
             DesignSize = (
-              239
+              398
               25)
             object LocalHomeButton: TUniImage
               Left = 0
@@ -261,7 +259,7 @@ object MainForm: TMainForm
             object LocalPathField: TUniEdit
               Left = 35
               Top = 0
-              Width = 198
+              Width = 357
               Height = 21
               Hint = 'Local Path'
               ShowHint = True
@@ -275,7 +273,7 @@ object MainForm: TMainForm
           object LocalFilesList: TUniListBox
             Left = 1
             Top = 26
-            Width = 239
+            Width = 398
             Height = 519
             Hint = ''
             Constraints.MinWidth = 100
@@ -283,45 +281,39 @@ object MainForm: TMainForm
             TabOrder = 1
             MultiSelect = True
             OnDblClick = LocalFilesListDblClick
-            ExplicitHeight = 170
           end
         end
         object RightCol: TUniPanel
-          Left = 248
+          Left = 407
           Top = 1
-          Width = 663
+          Width = 504
           Height = 546
           Hint = ''
           Align = alClient
           TabOrder = 1
           Caption = ''
-          ExplicitWidth = 211
-          ExplicitHeight = 197
           object CloudFilesList: TUniListBox
             Left = 1
             Top = 26
-            Width = 661
+            Width = 502
             Height = 519
             Hint = ''
             Align = alClient
             TabOrder = 0
             MultiSelect = True
             OnDblClick = CloudFilesListDblClick
-            ExplicitWidth = 209
-            ExplicitHeight = 170
           end
           object CloudNavPanel: TUniPanel
             Left = 1
             Top = 1
-            Width = 661
+            Width = 502
             Height = 25
             Hint = ''
             Align = alTop
             TabOrder = 1
             Caption = ''
-            ExplicitWidth = 209
             DesignSize = (
-              661
+              502
               25)
             object CloudHomeButton: TUniImage
               Left = 0
@@ -477,7 +469,7 @@ object MainForm: TMainForm
             object CloudPathField: TUniEdit
               Left = 35
               Top = 0
-              Width = 618
+              Width = 459
               Height = 21
               Hint = 'Cloud Path'
               ShowHint = True
@@ -486,7 +478,6 @@ object MainForm: TMainForm
               Anchors = [akLeft, akTop, akRight]
               TabOrder = 0
               OnKeyPress = CloudPathFieldKeyPress
-              ExplicitWidth = 166
             end
           end
         end
@@ -504,8 +495,6 @@ object MainForm: TMainForm
         Hint = ''
         Align = alClient
         TabOrder = 0
-        ExplicitWidth = 460
-        ExplicitHeight = 64
       end
       object NewAccountPanel: TUniPanel
         Left = 0
@@ -516,8 +505,6 @@ object MainForm: TMainForm
         Align = alBottom
         TabOrder = 1
         Caption = ''
-        ExplicitTop = 64
-        ExplicitWidth = 460
         DesignSize = (
           912
           135)
@@ -636,8 +623,10 @@ object MainForm: TMainForm
           Top = 23
           Width = 203
           Height = 21
+          Cursor = crHandPoint
           Hint = ''
-          Text = 'Azure'
+          Style = csDropDownList
+          Text = ''
           Items.Strings = (
             'Azure'
             'Amazon')
@@ -651,7 +640,9 @@ object MainForm: TMainForm
           Top = 104
           Width = 161
           Height = 21
+          Cursor = crHandPoint
           Hint = ''
+          Style = csDropDownList
           Text = ''
           Items.Strings = (
             'eu-west-1'
@@ -689,8 +680,6 @@ object MainForm: TMainForm
         Align = alClient
         TabOrder = 0
         Caption = 'TransfersMainPanel'
-        ExplicitWidth = 460
-        ExplicitHeight = 199
         object TransferGrid: TUniStringGrid
           Left = 1
           Top = 1
@@ -704,8 +693,6 @@ object MainForm: TMainForm
           Columns = <>
           Align = alClient
           TabOrder = 0
-          ExplicitWidth = 458
-          ExplicitHeight = 197
         end
       end
     end
@@ -722,14 +709,12 @@ object MainForm: TMainForm
         Align = alBottom
         TabOrder = 0
         Caption = ''
-        ExplicitTop = 136
-        ExplicitWidth = 460
         DesignSize = (
           912
           63)
         object ProxyHostLabel: TUniLabel
-          Left = 79
-          Top = 42
+          Left = 138
+          Top = 38
           Width = 31
           Height = 13
           Hint = ''
@@ -738,8 +723,8 @@ object MainForm: TMainForm
           TabOrder = 6
         end
         object ProxyPortLabel: TUniLabel
-          Left = 231
-          Top = 42
+          Left = 290
+          Top = 38
           Width = 31
           Height = 13
           Hint = ''
@@ -749,7 +734,7 @@ object MainForm: TMainForm
         end
         object ClearLogButton: TUniButton
           Left = 830
-          Top = 1
+          Top = 6
           Width = 75
           Height = 25
           Hint = ''
@@ -757,12 +742,11 @@ object MainForm: TMainForm
           Anchors = [akTop, akRight]
           TabOrder = 8
           OnClick = ClearLogButtonClick
-          ExplicitLeft = 378
         end
         object EnableErrorLoggingCheck: TUniCheckBox
-          Left = 0
+          Left = 6
           Top = 6
-          Width = 121
+          Width = 225
           Height = 17
           Hint = ''
           Checked = True
@@ -770,18 +754,18 @@ object MainForm: TMainForm
           TabOrder = 1
         end
         object EnableInfoLoggingCheck: TUniCheckBox
-          Left = 127
+          Left = 231
           Top = 6
-          Width = 121
+          Width = 219
           Height = 17
           Hint = ''
           Caption = 'Enable Info Logging'
           TabOrder = 2
         end
         object UseProxyCheck: TUniCheckBox
-          Left = 0
-          Top = 40
-          Width = 73
+          Left = 6
+          Top = 36
+          Width = 126
           Height = 17
           Hint = ''
           Caption = 'Use Proxy'
@@ -789,8 +773,8 @@ object MainForm: TMainForm
           OnClick = UseProxyCheckClick
         end
         object ProxyHostField: TUniEdit
-          Left = 118
-          Top = 38
+          Left = 177
+          Top = 34
           Width = 107
           Height = 21
           Hint = ''
@@ -799,8 +783,8 @@ object MainForm: TMainForm
           TabOrder = 4
         end
         object ProxyPortField: TUniEdit
-          Left = 270
-          Top = 38
+          Left = 329
+          Top = 34
           Width = 59
           Height = 21
           Hint = ''
@@ -809,8 +793,8 @@ object MainForm: TMainForm
           TabOrder = 5
         end
         object ProxyUpdateButton: TUniButton
-          Left = 335
-          Top = 35
+          Left = 394
+          Top = 34
           Width = 50
           Height = 25
           Hint = ''
@@ -831,13 +815,11 @@ object MainForm: TMainForm
         ReadOnly = True
         TabOrder = 1
         WordWrap = False
-        ExplicitWidth = 460
-        ExplicitHeight = 136
       end
     end
   end
   object CEImages: TUniImageList
-    Left = 688
+    Left = 672
     Bitmap = {
       494C01010B001800040010001000FFFFFFFF2000FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000003000000001002000000000000030

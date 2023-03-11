@@ -437,8 +437,10 @@ begin
   begin
     if CloudFilesList.Selected[I] then
     begin
-      if FCloudFiles.TryGetValue(CloudFilesList.Items.Strings[I], CloudFile) then
-        Exit(True);
+      //removing icon temporarily to check dictionary
+      if FCloudFiles.TryGetValue(CloudFilesList.Items.Strings[I].Replace('<i class="fas fa-folder"></i>  ',''), CloudFile) or
+        FCloudFiles.TryGetValue(CloudFilesList.Items.Strings[I].Replace('<i class="far fa-file"></i>  ',''), CloudFile) then
+          Exit(True);
       Exit(False);
     end;
   end;
@@ -455,7 +457,8 @@ begin
   begin
     if CloudFilesList.Selected[I] then
     begin
-      if FCloudFiles.TryGetValue(CloudFilesList.Items.Strings[I], CF) then
+      //removing icon temporarily to check dictionary
+      if FCloudFiles.TryGetValue(CloudFilesList.Items.Strings[I].Replace('<i class="far fa-file"></i>  ',''), CF) then
         Result.Add(CF);
     end;
   end;
@@ -473,8 +476,10 @@ begin
   begin
     if LocalFilesList.Selected[I] then
     begin
-      if FLocalFiles.TryGetValue(LocalFilesList.Items.Strings[I], LocalFile) then
-        Exit(True);
+      //removing icon temporarily to check dictionary
+      if FLocalFiles.TryGetValue(LocalFilesList.Items.Strings[I].Replace('<i class="fas fa-folder"></i>  ',''), LocalFile) or
+        FLocalFiles.TryGetValue(LocalFilesList.Items.Strings[I].Replace('<i class="far fa-file"></i>  ',''), LocalFile) then
+          Exit(True);
       Exit(False);
     end;
   end;
@@ -491,7 +496,8 @@ begin
   begin
     if LocalFilesList.Selected[I] then
     begin
-      if FLocalFiles.TryGetValue(LocalFilesList.Items.Strings[I], LF) then
+      //removing icon temporarily to check dictionary
+      if FLocalFiles.TryGetValue(LocalFilesList.Items.Strings[I].Replace('<i class="far fa-file"></i>  ',''), LF) then
         Result.Add(LF);
     end;
   end;
@@ -1036,11 +1042,12 @@ begin
 
   for CF In FCloudFiles.Values do
   begin
+    //adding icons to items
     if (CF.FileType = cftContainer) or
        (CF.FileType = cftBucket) or (CF.FileType = cftFolder) then
-      Dirs.Add(CF.Name)
+      Dirs.Add('<i class="fas fa-folder"></i>  ' + CF.Name)
     else
-      Fils.Add(CF.Name);
+      Fils.Add('<i class="fas fa-file"></i>  ' + CF.Name);
   end;
 
   Dirs.Sort;
@@ -1072,10 +1079,11 @@ begin
 
   for LF In FLocalFiles.Values do
   begin
+    //adding icons to items
     if (LF.FileType = lftDrive) or (LF.FileType = lftDirectory) then
-      Dirs.Add(LF.Name)
+      Dirs.Add('<i class="fas fa-folder"></i>  ' + LF.Name)
     else
-      Fils.Add(LF.Name);
+      Fils.Add('<i class="far fa-file"></i>  ' + LF.Name);
   end;
 
   Dirs.Sort;
