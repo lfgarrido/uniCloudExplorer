@@ -140,6 +140,12 @@ type
     procedure UniFormDestroy(Sender: TObject);
     procedure UniFormActivate(Sender: TObject);
     procedure UniFormReady(Sender: TObject);
+    procedure CloudFilesListMouseUp(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure LocalFilesListMouseUp(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure AccountsListBoxMouseUp(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
   private
     FLogger: TCloudLogger;
     FLocalPath: String;
@@ -243,6 +249,13 @@ procedure TMainForm.LocalFilesListMeasureItem(Control: TWinControl; Index: Integ
                                                  var Height: Integer);
 begin
   Height := CEImages.Height + 4;
+end;
+
+procedure TMainForm.LocalFilesListMouseUp(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
+begin
+  if Button = mbRight then
+    LocalPopup.Popup(X, Y, Sender);
 end;
 
 procedure TMainForm.LocalHomeButtonClick(Sender: TObject);
@@ -589,6 +602,13 @@ begin
     end);
 end;
 
+procedure TMainForm.AccountsListBoxMouseUp(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  if Button = mbRight then
+    AcctsPopup.Popup(X, Y, Sender);
+end;
+
 procedure TMainForm.ClearLogButtonClick(Sender: TObject);
 begin
   LogMemo.Clear;
@@ -710,6 +730,13 @@ begin
 //  CenterText := ( rect.Bottom - rect.Top - CloudFilesList.Canvas.TextHeight(text)) div 2 ;
 
 //  CloudFilesList.Canvas.TextOut(rect.left + CEImages.Width + 8 , rect.Top + CenterText, Val);
+end;
+
+procedure TMainForm.CloudFilesListMouseUp(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
+begin
+  if Button = mbRight then
+    CloudPopup.Popup(X, Y, Sender);
 end;
 
 procedure TMainForm.CloudHomeButtonClick(Sender: TObject);
@@ -1047,7 +1074,7 @@ begin
        (CF.FileType = cftBucket) or (CF.FileType = cftFolder) then
       Dirs.Add('<i class="fas fa-folder"></i>  ' + CF.Name)
     else
-      Fils.Add('<i class="fas fa-file"></i>  ' + CF.Name);
+      Fils.Add('<i class="far fa-file"></i>  ' + CF.Name);
   end;
 
   Dirs.Sort;

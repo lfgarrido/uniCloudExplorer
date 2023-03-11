@@ -1238,6 +1238,9 @@ procedure TCloudTransferManager.NotifyListeners(Job: TCloudTransferJob);
 var
   Event: TTransferJobUpdateListener;
 begin
+  //disabled regards thread errors to update cliend side
+  exit;
+
   if (FListeners = nil) or (Job = nil) then
     Exit;
   TMonitor.Enter(FListeners);

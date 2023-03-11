@@ -267,6 +267,7 @@ object MainForm: TMainForm
               Text = ''
               Anchors = [akLeft, akTop, akRight]
               TabOrder = 0
+              ReadOnly = True
               OnKeyPress = LocalPathFieldKeyPress
             end
           end
@@ -281,6 +282,7 @@ object MainForm: TMainForm
             TabOrder = 1
             MultiSelect = True
             OnDblClick = LocalFilesListDblClick
+            OnMouseUp = LocalFilesListMouseUp
           end
         end
         object RightCol: TUniPanel
@@ -302,6 +304,7 @@ object MainForm: TMainForm
             TabOrder = 0
             MultiSelect = True
             OnDblClick = CloudFilesListDblClick
+            OnMouseUp = CloudFilesListMouseUp
           end
           object CloudNavPanel: TUniPanel
             Left = 1
@@ -477,6 +480,7 @@ object MainForm: TMainForm
               Text = ''
               Anchors = [akLeft, akTop, akRight]
               TabOrder = 0
+              ReadOnly = True
               OnKeyPress = CloudPathFieldKeyPress
             end
           end
@@ -495,6 +499,7 @@ object MainForm: TMainForm
         Hint = ''
         Align = alClient
         TabOrder = 0
+        OnMouseUp = AccountsListBoxMouseUp
       end
       object NewAccountPanel: TUniPanel
         Left = 0
@@ -691,6 +696,11 @@ object MainForm: TMainForm
           ColCount = 3
           Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goColSizing, goRowSelect]
           Columns = <>
+          ClientEvents.ExtEvents.Strings = (
+            
+              'reconfigure=function reconfigure(sender, store, columns, oldStor' +
+              'e, oldColumns, eOpts)'#13#10'{'#13#10'   columns.forEach(function(el){el.fle' +
+              'x=1})'#13#10'}')
           Align = alClient
           TabOrder = 0
         end
