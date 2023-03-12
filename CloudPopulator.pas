@@ -343,7 +343,12 @@ begin
   if CloudType = cctAmazon then
   begin
     FConnection := TAmazonConnectionInfo.Create(nil);
+    //checking compiler version because from 10.4 region became string instead of enum
+{$IF CompilerVersion <= 33.0}
     TAmazonConnectionInfo(FConnection).Region := TAmazonConnectionInfo.GetRegionFromString(Region);
+{$ELSE}
+    TAmazonConnectionInfo(FConnection).Region := Region;
+{$ENDIF}
   end
   else
     FConnection := TAzureConnectionInfo.Create(nil);
@@ -371,7 +376,12 @@ end;
 function TCloudConnection.GetRegion: String;
 begin
   if Connection is TAmazonConnectionInfo then
+    //checking compiler version because from 10.4 region became string instead of enum
+{$IF CompilerVersion <= 33.0}
     Result := TAmazonConnectionInfo.GetRegionString(TAmazonConnectionInfo(Connection).Region)
+{$ELSE}
+    Result := TAmazonConnectionInfo(Connection).Region
+{$ENDIF}
   else
     Result := '';
 end;

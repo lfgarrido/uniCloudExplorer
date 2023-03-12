@@ -1267,4 +1267,14 @@ object MainForm: TMainForm
       OnClick = DeletedSelectedAcctClick
     end
   end
+  object UniTimerMonitor: TUniTimer
+    Enabled = False
+    ClientEvent.Strings = (
+      'function(sender)'
+      '{'
+      ' '
+      '}')
+    OnTimer = UniTimerMonitorTimer
+    Left = 592
+  end
 end

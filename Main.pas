@@ -20,7 +20,7 @@ uses
   uniGUIBaseClasses, uniButton, Vcl.Menus, uniMainMenu, uniImageList, uniMemo,
   uniBasicGrid, uniStringGrid, uniCheckBox, uniListBox, uniEdit,
   Vcl.Imaging.pngimage, uniImage, uniSplitter, uniPanel, uniPageControl,
-  uniMultiItem, uniComboBox, uniLabel;
+  uniMultiItem, uniComboBox, uniLabel, uniTimer;
 
 type
   TDelayedRefreshThread = class(TThread)
@@ -101,6 +101,7 @@ type
     LocalRefreshItem: TUniMenuItem;
     AcctsPopup: TUniPopupMenu;
     DeletedSelectedAcct: TUniMenuItem;
+    UniTimerMonitor: TUniTimer;
     procedure LocalFilesListDrawItem(Control: TWinControl; Index: Integer; Rect: TRect;
       State: TOwnerDrawState);
     procedure LocalFilesListMeasureItem(Control: TWinControl; Index: Integer; var Height: Integer);
@@ -146,6 +147,7 @@ type
       Shift: TShiftState; X, Y: Integer);
     procedure AccountsListBoxMouseUp(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
+    procedure UniTimerMonitorTimer(Sender: TObject);
   private
     FLogger: TCloudLogger;
     FLocalPath: String;
@@ -192,6 +194,8 @@ type
     procedure InitTransferTable;
 
     procedure HandleTransferJobUpdate(Job: TCloudTransferJob);
+    procedure ClearCloudSelection;
+    procedure ClearLocalSelection;
     { Private declarations }
   public
     { Public declarations }
@@ -261,6 +265,7 @@ end;
 procedure TMainForm.LocalHomeButtonClick(Sender: TObject);
 begin
   LoadLocalDrives;
+  ClearLocalSelection;
 end;
 
 procedure TMainForm.LocalPathFieldKeyPress(Sender: TObject; var Key: Char);
@@ -646,6 +651,8 @@ begin
 
     SetCurrentCloudPath(FPopulator.GetContainer, CurrPath);
   end;
+
+  ClearCloudSelection;
 end;
 
 procedure TMainForm.CloudFilesListDblClick(Sender: TObject);
@@ -663,11 +670,25 @@ begin
       SetCurrentCloudPath(CloudFile.Container, CloudFile.Path + CloudFile.Name);
     end;
   end;
+
+  ClearCloudSelection;
 end;
 
 procedure TMainForm.CloudFilesListDragDrop(Sender, Source: TObject; X, Y: Integer);
 begin
   UploadSelectedLocalFiles;
+end;
+
+procedure TMainForm.ClearCloudSelection;
+begin
+  if CloudFilesList.SelCount > 0 then
+    CloudFilesList.ClearSelection;
+end;
+
+procedure TMainForm.ClearLocalSelection;
+begin
+  if LocalFilesList.SelCount > 0 then
+    LocalFilesList.ClearSelection;
 end;
 
 procedure TMainForm.CloudFilesListDragOver(Sender, Source: TObject; X, Y: Integer;
@@ -746,6 +767,8 @@ begin
     FPopulator.LoadRootFiles(FCloudFiles);
     UpdateCloudFileList;
   end;
+
+  ClearCloudSelection;
 end;
 
 procedure TMainForm.CloudPathFieldKeyPress(Sender: TObject; var Key: Char);
@@ -884,6 +907,8 @@ begin
         RefreshCloud;
       end;
     finally
+      UniTimerMonitor.Enabled := True;
+      ShowMask('Deleting selected items');
       FreeAndNil(Files);
     end;
   end;
@@ -1009,6 +1034,8 @@ begin
         RefreshLocal;
       end;
     finally
+      UniTimerMonitor.Enabled := True;
+      ShowMask('Downloading selected items');
       FreeAndNil(Files);
     end;
   end;
@@ -1049,6 +1076,18 @@ end;
 procedure TMainForm.UniFormReady(Sender: TObject);
 begin
   CloudTabs.ActivePage := FilesPage;
+end;
+
+procedure TMainForm.UniTimerMonitorTimer(Sender: TObject);
+begin
+  //workaround to check each second if there are no more pending jobs and update ListBoxes
+  if (TCloudTransferManager.Instance.Size = 0) then
+  begin
+    RefreshLocal;
+    RefreshCloud;
+    UniTimerMonitor.Enabled := False;
+    HideMask;
+  end;
 end;
 
 procedure TMainForm.UpdateCloudFileList;
@@ -1174,6 +1213,8 @@ begin
       RefreshCloud;
     end;
   finally
+    UniTimerMonitor.Enabled := True;
+    ShowMask('Uploading selected items');
     FreeAndNil(Files);
   end;
 end;
@@ -1228,6 +1269,8 @@ begin
       SetCurrentLocalDirectory(Parent);
     end;
   end;
+
+  ClearLocalSelection;
 end;
 
 procedure TMainForm.LocalFilesListDblClick(Sender: TObject);
@@ -1245,6 +1288,8 @@ begin
       SetCurrentLocalDirectory(LocalFile.Path + LocalFile.Name + '\');
     end;
   end;
+
+  ClearLocalSelection;
 end;
 
 procedure TMainForm.SetCurrentCloudPath(Container, Path: String);
