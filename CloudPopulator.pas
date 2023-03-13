@@ -343,7 +343,6 @@ begin
   if CloudType = cctAmazon then
   begin
     FConnection := TAmazonConnectionInfo.Create(nil);
-    //checking compiler version because from 10.4 region became string instead of enum
 {$IF CompilerVersion <= 33.0}
     TAmazonConnectionInfo(FConnection).Region := TAmazonConnectionInfo.GetRegionFromString(Region);
 {$ELSE}
@@ -376,7 +375,6 @@ end;
 function TCloudConnection.GetRegion: String;
 begin
   if Connection is TAmazonConnectionInfo then
-    //checking compiler version because from 10.4 region became string instead of enum
 {$IF CompilerVersion <= 33.0}
     Result := TAmazonConnectionInfo.GetRegionString(TAmazonConnectionInfo(Connection).Region)
 {$ELSE}
@@ -467,10 +465,22 @@ begin
         BR := nil;
         try
           Log('Deleting Amazon Virtual Folder: ' + CloudFile.Path + CloudFile.Name, cltInfo);
-          BR := FService.GetBucket(CloudFile.Container, Params, RespInfo);
+{$IF CompilerVersion <= 33.0}
+          BR := FService.GetBucket(CloudFile.Container, Params, RespInfo,
+            TAmazonConnectionInfo(FService.ConnectionInfo).Region);
+{$ELSE}
+          BR := FService.GetBucket(CloudFile.Container, Params, RespInfo,
+            TAmazonConnectionInfo(FService.ConnectionInfo).Region);
+{$ENDIF}
           for ObjR In BR.Objects do
           begin
-            if not FService.DeleteObject(CloudFile.Container, ObjR.Name, RespInfo) then
+{$IF CompilerVersion <= 33.0}
+          if not (FService.DeleteObject(CloudFile.Container, ObjR.Name, RespInfo,
+            TAmazonConnectionInfo(FService.ConnectionInfo).Region)) then
+{$ELSE}
+          if not (FService.DeleteObject(CloudFile.Container, ObjR.Name, RespInfo,
+            TAmazonConnectionInfo(FService.ConnectionInfo).Region)) then
+{$ENDIF}
             begin
               Log(RespInfo.StatusMessage, cltError);
               Result := False;
@@ -485,7 +495,13 @@ begin
       begin
         Log('Deleting Amazon Object: ' + FilePath, cltInfo);
         FilePath := CloudFile.Path + CloudFile.Name;
-        Result := FService.DeleteObject(CloudFile.Container, FilePath, RespInfo);
+{$IF CompilerVersion <= 33.0}
+        Result := FService.DeleteObject(CloudFile.Container, FilePath, RespInfo,
+          TAmazonConnectionInfo(FService.ConnectionInfo).Region);
+{$ELSE}
+        Result := FService.DeleteObject(CloudFile.Container, FilePath, RespInfo,
+          TAmazonConnectionInfo(FService.ConnectionInfo).Region);
+{$ENDIF}
         if not Result then
           Log(RespInfo.StatusMessage, cltError);
       end;
@@ -701,7 +717,13 @@ begin
         Params.Values['delimiter'] := '/';
       Params.Values['prefix'] := Path;
       try
-        BResult := FService.GetBucket(Container, Params, RespInfo);
+{$IF CompilerVersion <= 33.0}
+        BResult := FService.GetBucket(Container, Params, RespInfo,
+          TAmazonConnectionInfo(FConnection).Region);
+{$ELSE}
+        BResult := FService.GetBucket(Container, Params, RespInfo,
+          TAmazonConnectionInfo(FConnection).Region);
+{$ENDIF}
         if BResult <> nil then
         begin
           try
@@ -1441,7 +1463,13 @@ begin
       begin
         FS := TFileStream.Create(LocalFilePath, fmOpenRead);
         Content := ByteContent(fs);
-        Success := FService.UploadObject(ContainerName, FileName, Content, false, nil, nil, amzbaNotSpecified, RespInfo);
+{$IF CompilerVersion <= 33.0}
+        Success := FService.UploadObject(ContainerName, FileName, Content, false, nil, nil, amzbaNotSpecified, RespInfo,
+          TAmazonConnectionInfo(FService.ConnectionInfo).Region);
+{$ELSE}
+        Success := FService.UploadObject(ContainerName, FileName, Content, false, nil, nil, amzbaNotSpecified, RespInfo
+          TAmazonConnectionInfo(FService.ConnectionInfo).Region);
+{$ENDIF}
       end;
     end
     else
@@ -1451,7 +1479,13 @@ begin
       else
         FS := TFileStream.Create(LocalFilePath, fmCreate);
 
-      Success := FService.GetObject(ContainerName, FileName, FS, RespInfo);
+{$IF CompilerVersion <= 33.0}
+      Success := FService.GetObject(ContainerName, FileName, FS, RespInfo,
+        TAmazonConnectionInfo(FService.ConnectionInfo).Region);
+{$ELSE}
+      Success := FService.GetObject(ContainerName, FileName, FS, RespInfo,
+        TAmazonConnectionInfo(FService.ConnectionInfo).Region);
+{$ENDIF}
     end;
   finally
     if not Success then
