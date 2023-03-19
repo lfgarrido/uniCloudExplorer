@@ -1467,7 +1467,7 @@ begin
         Success := FService.UploadObject(ContainerName, FileName, Content, false, nil, nil, amzbaNotSpecified, RespInfo,
           TAmazonConnectionInfo(FService.ConnectionInfo).Region);
 {$ELSE}
-        Success := FService.UploadObject(ContainerName, FileName, Content, false, nil, nil, amzbaNotSpecified, RespInfo
+        Success := FService.UploadObject(ContainerName, FileName, Content, false, nil, nil, amzbaNotSpecified, RespInfo,
           TAmazonConnectionInfo(FService.ConnectionInfo).Region);
 {$ENDIF}
       end;
